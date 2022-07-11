@@ -1,4 +1,5 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./js/modules/calc.js":
@@ -7,7 +8,6 @@
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -135,7 +135,6 @@ function calc() {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -224,100 +223,77 @@ function cards() {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
 /* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
-/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_services_services__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
-function forms(formSelector, modalTimerId) {
-   const forms = document.querySelectorAll(formSelector);
-
-   forms.forEach(item => {
-         postData(item);
-   });
-
+function forms(formsSelector, modalTimerId) {
+   const forms = document.querySelectorAll(formsSelector);
    const message = {
       loading: 'img/form/spinner.svg',
-      success: 'Спасибо, скоро мы с вами свяжемся',
-      failure: 'Что-то пошло не так'
+      success: 'Спасибо! Скоро мы с вами свяжемся',
+      failure: 'Что-то пошло не так...'
    };
+
+   forms.forEach(item => {
+      bindPostData(item);
+   });
+
+   function bindPostData(form) {
+      form.addEventListener('submit', (e) => {
+         e.preventDefault();
+
+         let statusMessage = document.createElement('img');
+         statusMessage.src = message.loading;
+         statusMessage.style.cssText = `
+            display: block;
+            margin: 0 auto;
+         `;
+         form.insertAdjacentElement('afterend', statusMessage);
+      
+         const formData = new FormData(form);
+
+         const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
+         (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json)
+         .then(data => {
+            showThanksModal(message.success);
+            statusMessage.remove();
+         }).catch(() => {
+            showThanksModal(message.failure);
+         }).finally(() => {
+            form.reset();
+         });
+      });
+   }
 
    function showThanksModal(message) {
       const prevModalDialog = document.querySelector('.modal__dialog');
 
       prevModalDialog.classList.add('hide');
-      prevModalDialog.classList.remove('show');
       (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModal)('.modal', modalTimerId);
 
       const thanksModal = document.createElement('div');
       thanksModal.classList.add('modal__dialog');
       thanksModal.innerHTML = `
          <div class="modal__content">
-            <div class="modal__close" data-close>×</div>
+            <div class="modal__close" data-close>x</div>
             <div class="modal__title">${message}</div>
          </div>
-      `
-
+      `;
       document.querySelector('.modal').append(thanksModal);
       setTimeout(() => {
          thanksModal.remove();
          prevModalDialog.classList.add('show');
          prevModalDialog.classList.remove('hide');
          (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
-      }, 4000);
+      }, 2000);
    }
-
-   function postData(form) {
-      form.addEventListener('submit', (e) => {
-         e.preventDefault();
-   
-         const statusMessage = document.createElement('img');
-         statusMessage.src = message.loading;
-         statusMessage.style.cssText = `
-            display: block;
-            margin: 0 auto;
-            padding-top: 10px;
-         `;
-         form.insertAdjacentElement('afterend', statusMessage);
-   
-         const formData = new FormData(form); //создает автоматически из полученых данных обьект
-   
-         const object = {};
-         formData.forEach(function(value, key) {
-            object[key] = value;
-         });
-   
-         fetch('server1.php', {
-            method: "POST",
-            headers: {
-                  'Content-type': 'multipart/form-data'
-            },
-            body: JSON.stringify(object)
-         })
-         .then(data => data.text())
-         .then(data => {
-            console.log(data);
-            showThanksModal(message.success);
-            statusMessage.remove();
-         })
-         .catch(() => {
-            showThanksModal(message.failure);
-         })
-         .finally(() => {
-            form.reset();
-         });
-      });
-   };
-
-   // fetch('http://localhost:3000/menu')
-   // .then(data => data.json())
-   // .then(res => console.log(res));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
@@ -330,7 +306,6 @@ function forms(formSelector, modalTimerId) {
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
@@ -390,7 +365,6 @@ function modal(triggerSelector, modalSelector, modalTimerId) {
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -549,7 +523,6 @@ function slider({container, slide, nextArrow, prevArrow, totalCounter, currentCo
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -603,7 +576,6 @@ function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -667,7 +639,35 @@ function timer(id, deadline) {
 /*!*********************************!*\
   !*** ./js/services/services.js ***!
   \*********************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "postData": () => (/* binding */ postData),
+/* harmony export */   "getResource": () => (/* binding */ getResource)
+/* harmony export */ });
+const postData = async (url, data) => {
+   let res = await fetch(url, {
+      method: "POST",
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      body: data
+   });
+
+   return await res.json();
+};
+
+async function getResource(url) {
+   let res = await fetch(url);
+
+   if (!res.ok) {
+      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+   }
+
+   return await res.json();
+}
+
 
 
 
@@ -700,18 +700,6 @@ function timer(id, deadline) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -742,9 +730,8 @@ function timer(id, deadline) {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 /*!**********************!*\
   !*** ./js/script.js ***!
   \**********************/
