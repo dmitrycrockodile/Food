@@ -583,11 +583,11 @@ __webpack_require__.r(__webpack_exports__);
 function timer(id, deadline) {
 
    function getTimeRemaining(endtime) {
-      const t = Date.parse(endtime) - Date.parse(new Date()),
-            days = Math.floor(t / (1000 * 60 * 60 * 24)),
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
-            minutes = Math.floor((t / (1000 * 60) % 60)),
-            seconds = Math.floor((t / 1000) % 60);
+      const t = Date.parse(endtime) - Date.parse(new Date());
+      const days = Math.floor(t / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((t / (1000 * 60 * 60) % 24));
+      const minutes = Math.floor((t / (1000 * 60) % 60));
+      const seconds = Math.floor((t / 1000) % 60);
 
       return {
          'total': t,
@@ -607,14 +607,14 @@ function timer(id, deadline) {
    }
 
    function setClock(selector, endtime) {
-      const timer = document.querySelector(selector),
-            days = timer.querySelector('#days'),
-            hours = timer.querySelector('#hours'),
-            minutes = timer.querySelector('#minutes'),
-            seconds = timer.querySelector('#seconds'),
-            timeInterval = setInterval(updateClock, 1000);
+      const timer = document.querySelector(selector);
+      const days = timer.querySelector('#days');
+      const hours = timer.querySelector('#hours');
+      const minutes = timer.querySelector('#minutes');
+      const seconds = timer.querySelector('#seconds');
+      const timeInterval = setInterval(updateClock, 1000);
 
-            updateClock();
+      updateClock();
 
       function updateClock() {
          const t = getTimeRemaining(endtime);
@@ -623,7 +623,7 @@ function timer(id, deadline) {
          minutes.innerHTML = getZeros(t.minutes);
          seconds.innerHTML = getZeros(t.seconds); 
          if(t <= 0) {
-               clearInterval(timeInterval);
+            clearInterval(timeInterval);
          }
       }
    }
@@ -757,7 +757,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])('.tabheader__item', '.tabcontent', '.tabheader__items', 'tabheader__item_active');
     (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal', modalTimerId);
-    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('.timer', '2022-03-27');
+    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('.timer', '2022-09-01');
     (0,_modules_cards__WEBPACK_IMPORTED_MODULE_3__["default"])();
     (0,_modules_calc__WEBPACK_IMPORTED_MODULE_4__["default"])();
     (0,_modules_forms__WEBPACK_IMPORTED_MODULE_5__["default"])('form', modalTimerId);
